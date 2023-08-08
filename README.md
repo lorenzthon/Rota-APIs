@@ -20,6 +20,9 @@
     - [Delete Role Route](#delete-role-route)
     - [Create Room Route](#create-room-route)
     - [Delete Room Route](#delete-room-route)
+    - [Timetable Route](#timetable-route)
+    - [Available staff Route](#available-staff-route)
+
 
 
    
@@ -664,6 +667,196 @@ There are several possible response scenarios:
 ```
 [Back to top](#top)
 
+<a name="timetable-route"></a>
+## `/timetable` Route
+
+This route is used to retrieve the timetable for all rooms, including details about each employee's scheduled time, and any absences.
+
+**Endpoint:** `/timetable`
+
+**HTTP Method:** `GET`
+
+### Request
+
+Simply send a `GET` request to the endpoint to retrieve the timetable.
+
+Example of the request URL:
+
+```
+/timetable
+```
+
+### Response
+
+The API returns a JSON object with rooms as keys. Each room contains date entries, and each date entry contains plan details. If an entry belongs to the "Absent" room, it will have special fields to mark absences and provide absence details.
+
+Example of a standard room in the response:
+
+```json
+{
+  "Surgery 1": {
+    "1st January": {
+      "date": "1st January",
+      "date_string": "01/01/2023",
+      "room": "Room1",
+      "employees": {
+        "ShiftID1": {
+          "UUID": "...",
+          "name": "John",
+          "title": "Manager",
+          ...
+        }
+      }
+    }
+  }
+}
+```
+
+Example of an absent room in the response:
+
+```json
+{
+   "Absent": {
+    "1st January": {
+      "date": "1st January",
+      "date_string": "01/01/2023",
+      "room": "Absent",
+      "employees": {
+        "ShiftID1": {
+          "UUID": "...",
+          "name": "John",
+          "title": "Manager",
+          ...
+        }
+      }
+    }
+  },
+   
+  "Absent": {
+    "1st January": {
+      "date": "1st January",
+      "date_string": "01/01/2023",
+      "room": "Absent",
+      "employees": {
+        "ShiftID1": {
+          "UUID": "...",
+          "name": "John",
+          "title": "Manager",
+          ...
+        }
+      },
+      "absent": true,
+      "absentData": {
+        "ShiftID1": {
+          "absentType": "Sick",
+          "notes": "Fever",
+          "date": "01/01/2023",
+          "employeeUUID": "..."
+        }
+      }
+    }
+  }   
+}
+```
+
+### Data Structures
+
+1. **Normal room map**:
+   - Key: `Room` : the room name
+   - Value: `Timetable map`
+   
+2. **Timetable map**:
+   
+   - Key : `DisplayDate`: The weekday & date as a human readable string
+
+
+- **There are two possible Values**
+  - Value: `planMap`
+    - This occurs for all rooms by default
+    - `date`: YYYY/MM/DD format of the date.
+    - `date_string`: Human readable date string.
+    - `room`: The room the plan is assigned to.
+    - `employees`: a map containing key: { shiftId (int) : `RotaEmployee` }
+  - Value : `AbsentPlanMap`
+    - This only occurs for the `Absent` room
+    - it will contain the default planMap keys and have an additional 2 keys
+    - `absent`: boolean always true for `AbsentPlanMap`
+    - `absentData`: a map containing : { EMPLOYEE_UUID : `Absence`}
+
+
+1. `RotaEmployee` : dynamic shift data.
+   - When you Insert a shift anywhere **including absent** it will add a new `RotaEmployee` to the `planMap`
+     - `start` : "HH:MM" the start time of the shift.
+     - `end` : "HH:MM" the end time of the shift.
+     - `notes` : The notes for the shift.
+     - `break` : "HH:MM" the break duration for the shift.
+     - `room` : the shift room location.
+     - `shiftId` : the id relevant to the shift. (Unique for every Date & Room combination)
+
+   
+2. `Absence` :
+
+   - `absentType`: Type of absence (e.g., Sick, Vacation).
+   - `notes`: Additional notes about the absence.
+   - `date`: Date of the absence.
+   - `employeeUUID`: UUID of the absent employee.
+
+[Back to top](#top)
+
+
+
+<a name="available-staff-route"></a>
+## `/available-staff` Route
+
+This route is used to retrieve a list of staff that are timetabled as available for the current month.
+
+**Endpoint:** `/available-staff`
+
+**HTTP Method:** `GET`
+
+### Request
+
+Simply send a `GET` request to the endpoint without any parameters to retrieve the available staff for the current month.
+
+Example of the request URL:
+
+```
+/available-staff
+```
+
+### Response
+
+The API returns a JSON object for the month containing the available staff. Each entry in the JSON object is keyed by a date string and the associated value is a list of employee objects. Each employee object consists of **static** details like their schedule for the week, UUID, active status, annual leave, break time, email, hourly wage, join date, name, phone, and title.
+
+Example of a response:
+
+```json
+{
+  "1st January": [
+    {
+      "Schedule": {
+        "Monday": { ... },
+        ...
+      },
+      "UUID": "...",
+      ...
+      "title": "nurse"
+    },
+    ...
+  ]
+  ...
+}
+```
+
+If no staff is timetabled as available for the current month:
+
+```json
+{}
+```
+
+
+
+[Back to top](#top)
 
 
 ## Usage
