@@ -1,0 +1,221 @@
+.blue {
+    background: #3498db !important;
+}
+
+.purple {
+    background: #9b59b6 !important;
+}
+
+.navy {
+    background: #34495e !important;
+}
+
+.green {
+    background: #2ecc71 !important;
+}
+
+.red {
+    background: #e74c3c !important;
+}
+
+.orange {
+    background: #f39c12 !important;
+}
+
+.yellow {
+    background: #f1c40f !important;
+}
+
+.editperson-button-defaults{
+    padding:1.5em;
+    padding-top:0.3em;
+    padding-bottom:0.3em;
+    margin-bottom:0.3em;
+    border-radius: 24px;
+    transition:all 0.5s linear;
+}
+
+.editperson-button_line_default{
+    color:white;
+    background: #309df0;
+    border:4px solid white;
+    text-align: center;
+}
+.edit-person-form-time {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.edit-person-container {
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 1em;
+
+}
+
+.edit-person-title {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    color: #309df0;
+}
+
+.edit-person-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-person-form input,
+.edit-person-form select,
+.edit-person-form textarea {
+    padding: 0.5em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.edit-person-form button {
+    padding: 0.5em 1em;
+    background-color: #309df0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-person-form button:hover {
+    background-color: #257cbf;
+}
+
+
+.edit-person-popup-container {
+    display: none;
+    position: fixed;
+    z-index: 9999999;
+
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.edit-person-popup-content {
+    background-color: transparent;
+    margin: auto;
+    width: 75%;
+    padding: 1em;
+    transition: all 0.5s ease;
+}
+
+.edit-person-close-button {
+    color: white;
+    float: right;
+    font-size: 4em;
+    font-weight: bold;
+    padding-right: 0.5em;
+}
+
+.edit-person-close-button:hover,
+.edit-person-close-button:focus {
+    color: darkred;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.edit-person-popup-trigger {
+    
+    cursor: pointer;
+    transition: all 0.5s linear;
+}
+
+
+.edit-person-module {
+    width: 100%;
+    padding: 0.75em;
+    border-radius: 1em;
+    background: #34495e;
+    color: white;
+    font-size: 2em;
+    text-align: center;
+}
+.edit-person-module .edit-person-title {
+    color: rgba(117, 178, 239, 0.85);
+    font-size: 0.8em;
+    line-height: 2;
+}
+.edit-person-module input {
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75em;
+    background: #3d566e;
+    color: white;
+    box-sizing: border-box;
+    margin-bottom: 0.5em;
+    font-size: 0.8em;
+}
+.edit-person-module input[type="time"] {
+    font-size: 0.9em;
+    font-family: "Lato", sans-serif;
+}
+.edit-person-module input[type="submit"] {
+    background: #ea6153;
+    cursor: pointer;
+}
+.edit-person-module input[type="submit"]:hover {
+    background: #e74c3c;
+}
+.edit-person-module .edit-person-half {
+    width: 49%;
+    display: inline-block;
+    margin: 0;
+}
+.edit-person-module .edit-person-color-picker {
+    margin: 0.25em auto 0.75em;
+    text-align: center;
+}
+.edit-person-module .edit-person-color-picker li {
+    display: inline-block;
+    width: 2.45em;
+    height: 2.45em;
+    border-radius: 50%;
+    margin: 0.3em auto 0em;
+    text-align: left;
+    cursor: pointer;
+    opacity: 0.6;
+    -moz-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+}
+.edit-person-module .edit-person-color-picker li:hover {
+    opacity: 1;
+}
+.edit-person-module .edit-person-color-picker li.color-selected {
+    border: 2px solid white;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+@keyframes fadeOut {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s;
+}
+
+

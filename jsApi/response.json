@@ -1,0 +1,20 @@
+{
+  "status": "fail",
+  "message": null,
+
+  "error": {
+    "message": "Failed to update shift",
+
+    "Missing fields": ["UUID", "..."],
+    "Warning": {
+      "2022-12-26" : "Failed to add absent entry",
+      "2022-12-27" : "Failed to add absent entry",
+      "..." : "Failed to add absent entry"
+    },
+    "Conflict": {
+      "email": {"UUID": "..." , "email":  "..."}
+    }
+  }
+
+
+}

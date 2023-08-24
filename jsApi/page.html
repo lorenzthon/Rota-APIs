@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <link rel="stylesheet" href="employee/style/employeePage.css">
+    <link rel="stylesheet" href="employee/style/editor.css">
+
+    <script src="employee/style/table.js"></script> <!-- Table Javascript -->
+    <script src="employee/addEmployee.js"></script> <!-- Add employee Javascript -->
+
+    <script src="api.js"></script> <!-- API URL's -->
+    <script src="apiWrapper.js"></script>  <!-- API Interactions with Error handling -->
+
+
+</head>
+
+
+<body class="flex">
+
+<h1 id="active-employees-title">Active Employees</h1>
+
+<!-- Active Employees Table -->
+<div id="active-employees" class="table-responsive">
+    <table class="table">
+        <tbody id="active-table-body">
+        <!-- Active Employees Table data will be inserted here -->
+        </tbody>
+    </table>
+</div>
+
+<br>
+<br>
+<br>
+
+
+<h1 id="archived-employees-title" style="">Archived Employees</h1>
+
+<!-- Archived Employees Table -->
+<div id="archived-employees" class="table-responsive" style="">
+    <table class="table">
+        <tbody id="archived-table-body">
+        <!-- Archived Employees Table data will be inserted here -->
+        </tbody>
+    </table>
+</div>
+
+
+<br>
+<br>
+<br>
+
+
+<!-- Add employee form (Old design) -->
+<div class="row" id="addPerson" style="">
+    <div class="col-md-12">
+        <div class="form">
+
+            <form id="updateForm" autocomplete="off">
+                <button class="form_close" id="closeAddPerson"><i class="fa fa-times-circle" aria-hidden="true"></i>
+                </button>
+
+                <fieldset>
+
+                    <div class="subtitle"><span class="number">1.</span> Add new employee</div>
+
+                    <div class="input-container">
+
+                        <label for="name" class="placeholder">Full Name:</label>
+                        <input type="text" id="name" name="full_name" class="input" placeholder=" ">
+                        <div class="cut"></div>
+                    </div>
+                    <div class="day-container">
+
+                        <div class="input-container">
+                            <label for="contact_number" class="placeholder">Contact Number:</label>
+                            <input type="text" id="contact_number" name="contact_number" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+
+                        <div class="input-container">
+                            <label for="email" class="placeholder">Contact Email:</label>
+                            <input type="email" id="email" name="contact_email" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+                    </div>
+                    <div class="day-container">
+                        <div class="input-container">
+                            <label for="role" class="placeholder">Role:</label>
+                            <select id="role" name="role" class="input">
+                            </select>
+                            <div class="cut cut-short"></div>
+
+                        </div>
+
+                        <div class="input-container">
+                            <label for="join_date" class="placeholder">Join Date:</label>
+                            <input type="date" id="join_date" name="join_date" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="day-container">
+
+                        <div class="input-container">
+                            <label for="hourly_rate" class="placeholder">Hourly Rate:</label>
+                            <input type="number" id="hourly_rate" name="hourly_rate" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+                        <div class="input-container">
+                            <label for="annual-leave" class="placeholder">Annual leave hours</label>
+                            <input type="number" id="annual-leave" name="annual-leave" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+
+                    </div>
+
+
+                    <fieldset id="scheduleFieldset">
+
+                        <div class="flex-container">
+
+                            <div class="input-container"
+                                 style="text-align: center; font-size: 1.5em; margin-bottom: 2em; display: flex; justify-content: center;">
+                                <div class="subtitle" style="margin-right: 5em; font-size:1.25em;">2. Schedule</div>
+                                <div class="radio-container">
+                                    <input type="radio" id="everyday" value="everyday" name="schedule_type" checked>
+                                    <label for="everyday" class="light">Set every day to this time</label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="custom" value="custom" name="schedule_type">
+                                    <label for="custom" class="light">Custom day times</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div id="everydaySchedule">
+                            <br>
+                            <div class="subtitle">Work Schedule for Every Day</div>
+
+                            <div class="day-container">
+                                <div class="input-container">
+                                    <label for="start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="start_time" name="everyday_start_time" class="input"
+                                           placeholder="09:00" value="09:00">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="end_time" name="everyday_end_time" class="input"
+                                           placeholder="17:00" value="17:00">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="customSchedule" style="display: none;">
+                            <div class="checkbox-container">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-monday-add" checked> Monday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-tuesday-add" checked> Tuesday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-wednesday-add" checked> Wednesday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-thursday-add" checked> Thursday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-friday-add" checked> Friday
+                                </label>
+                            </div>
+
+
+                            <div class="day-container" id="monday_enabled-add">
+                                <div class="day-title">Monday</div>
+                                <div class="input-container">
+                                    <label for="monday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="monday_start_time" name="monday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="monday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="monday_end_time" name="monday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+                            <div class="day-container" id="tuesday_enabled-add">
+
+
+                                <div class="day-title">Tuesday</div>
+                                <div class="input-container">
+                                    <label for="tuesday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="tuesday_start_time" name="tuesday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="tuesday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="tuesday_end_time" name="tuesday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+                            <div class="day-container" id="wednesday_enabled-add">
+
+                                <div class="day-title">Wednesday</div>
+                                <div class="input-container">
+                                    <label for="wednesday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="wednesday_start_time" name="wednesday_start_time"
+                                           class="input" placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="wednesday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="wednesday_end_time" name="wednesday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+                            <div class="day-container" id="thursday_enabled-add">
+
+                                <div class="day-title">Thursday</div>
+
+                                <div class="input-container">
+                                    <label for="thursday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="thursday_start_time" name="thursday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="thursday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="thursday_end_time" name="thursday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+                            <div class="day-container" id="friday_enabled-add">
+
+                                <div class="day-title">Friday</div>
+
+                                <div class="input-container">
+                                    <label for="friday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="friday_start_time" name="friday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="friday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="friday_end_time" name="friday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </fieldset>
+                </fieldset>
+
+                <button type="submit" class="submit" style="border: 2px solid black">Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#updateForm').submit(function (e) {
+            e.preventDefault();
+            // Use the API wrapper function to create the employee
+            createEmployee(false);
+
+        });
+    });
+</script>
+
+
+
+<div class="row" id="edit-EditPerson" style="">
+    <div class="col-md-12">
+        <div class="form">
+            <form id="edit-EditUpdateForm" autocomplete="off">
+                <button class="form_close" id="closeEditPerson" style="position: absolute; top: 0; right: 0;"><i class="fa fa-times-circle" aria-hidden="true"></i>
+                </button>
+                <fieldset>
+                    <input type="text" id="edit-UUID" name="UUID" class="input" placeholder="" hidden>
+                    <div class="subtitle"><span class="number">1.</span> Editing existing employee</div>
+
+                    <div class="input-container">
+                        <label for="edit-name" class="placeholder">Full Name:</label>
+                        <input type="text" id="edit-name" name="full_name" class="input" placeholder=" ">
+                        <div class="cut"></div>
+                    </div>
+                    <div class="day-container">
+
+                        <div class="input-container">
+                            <label for="edit-contact_number" class="placeholder">Contact Number:</label>
+                            <input type="text" id="edit-contact_number" name="contact_number" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+
+                        <div class="input-container">
+                            <label for="edit-email" class="placeholder">Contact Email:</label>
+                            <input type="email" id="edit-email" name="contact_email" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+                    </div>
+
+                    <div class="day-container">
+                        <div class="input-container">
+                            <label for="edit-role" class="placeholder">Role:</label>
+                            <select id="edit-role" name="role" class="input">
+
+                            </select>
+                            <div class="cut cut-short"></div>
+
+                        </div>
+
+                        <div class="input-container">
+                            <label for="edit-join_date" class="placeholder">Join Date:</label>
+                            <input type="date" id="edit-join_date" name="join_date" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="day-container">
+
+                        <div class="input-container">
+                            <label for="edit-hourly_rate" class="placeholder">Hourly Rate:</label>
+                            <input type="number" id="edit-hourly_rate" name="hourly_rate" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+
+                        <div class="input-container">
+                            <label for="edit-annual-leave" class="placeholder">Annual leave hours</label>
+                            <input type="number" id="edit-annual-leave" name="annual-leave" class="input" placeholder=" ">
+                            <div class="cut"></div>
+                        </div>
+                    </div>
+
+
+                    <fieldset id="edit-scheduleFieldset">
+
+
+                        <div class="flex-container">
+
+                            <div class="input-container" style="text-align: center; font-size: 1.5em; margin-bottom: 2em; display: flex; justify-content: center;">
+                                <div class="subtitle" style="margin-right: 5em; font-size:1.25em;">2. Schedule</div>
+                                <div class="radio-container">
+                                    <input type="radio" id="edit-everyday" value="everyday" name="schedule_type" checked>
+                                    <label for="edit-everyday" class="light">Set every day to this time</label>
+                                </div>
+                                <div class="radio-container">
+                                    <input type="radio" id="edit-custom" value="custom" name="schedule_type">
+                                    <label for="edit-custom" class="light">Custom day times</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div id="edit-everydaySchedule">
+                            <br>
+                            <div class="subtitle">Work Schedule for Every Day</div>
+
+                            <div class="day-container">
+                                <div class="input-container">
+                                    <label for="edit-start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="edit-start_time" name="everyday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="edit-end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="edit-end_time" name="everyday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="edit-customSchedule" style="display: none;">
+                            <div class="checkbox-container">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-monday" checked> Monday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-tuesday" checked> Tuesday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-wednesday" checked> Wednesday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-thursday" checked> Thursday
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="checkbox-friday" checked> Friday
+                                </label>
+                            </div>
+
+
+                            <div class="day-container" id="monday_enabled">
+                                <div class="day-title">Monday</div>
+                                <div class="input-container">
+                                    <label for="edit-monday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="edit-monday_start_time" name="monday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+
+                                <div class="input-container">
+                                    <label for="edit-monday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="edit-monday_end_time" name="monday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="day-container" id="tuesday_enabled">
+                                <div class="day-title">Tuesday</div>
+                                <div class="input-container">
+                                    <label for="edit-tuesday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="edit-tuesday_start_time" name="tuesday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="edit-tuesday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="edit-tuesday_end_time" name="tuesday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="day-container" id="wednesday_enabled">
+                                <div class="day-title">Wednesday</div>
+                                <div class="input-container">
+                                    <label for="edit-wednesday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="edit-wednesday_start_time" name="wednesday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="edit-wednesday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="edit-wednesday_end_time" name="wednesday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="day-container" id="thursday_enabled">
+                                <div class="day-title">Thursday</div>
+                                <div class="input-container">
+                                    <label for="edit-thursday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="edit-thursday_start_time" name="thursday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="edit-thursday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="edit-thursday_end_time" name="thursday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="day-container" id="friday_enabled">
+                                <div class="day-title">Friday</div>
+                                <div class="input-container">
+                                    <label for="edit-friday_start_time" class="placeholder">Start Time:</label>
+                                    <input type="time" id="edit-friday_start_time" name="friday_start_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+
+                                <div class="input-container">
+                                    <label for="edit-friday_end_time" class="placeholder">End Time:</label>
+                                    <input type="time" id="edit-friday_end_time" name="friday_end_time" class="input"
+                                           placeholder=" ">
+                                    <div class="cut"></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </fieldset>
+                </fieldset>
+
+                <button type="submit" class="submit" style="border: 2px solid black">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#edit-EditUpdateForm').submit(function (e) {
+            e.preventDefault();
+            // Use the API wrapper function to create the employee
+            editEmployee()
+        });
+    });
+</script>
+
+</body>
+
+
+</html>
